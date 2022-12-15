@@ -9,4 +9,10 @@ export class UserDto {
   @IsNotEmpty()
   @MinLength(5)
   password: string;
+
+  @IsNotEmpty()
+  petName: string;
+
+  @IsNotEmpty()
+  picture: string;
 }
