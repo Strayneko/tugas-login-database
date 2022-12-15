@@ -18,9 +18,9 @@ import { AuthExceptionFilter } from './common/filters/auth-exceptions.fitler';
 @UseFilters(AuthExceptionFilter)
 export class AppController {
   @Get('/')
-  @Render('login')
-  async index(@Request() req) {
-    return { message: req.flash('loginError') };
+  async index(@Request() req, @Res() res) {
+    if (req.user) res.redirect('/home');
+    res.render('login', { message: req.flash('loginError') });
   }
 
   @UseGuards(LoginGuard)
@@ -41,6 +41,12 @@ export class AppController {
   @Render('profile')
   getProfile(@Request() req) {
     return { user: req.user };
+  }
+
+  @Get('/register')
+  @Render('register')
+  register() {
+    return;
   }
 
   @Get('/logout')

@@ -1,8 +1,11 @@
+import { userInfo } from 'os';
 import {
   Column,
   Entity,
   JoinColumn,
   JoinTable,
+  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,12 +30,7 @@ export class User {
   })
   password: string;
 
-  @Column({
-    nullable: false,
-  })
-  petId: number;
-
-  @OneToOne(() => Pet, (pet) => pet.id)
+  @OneToOne(() => Pet)
   @JoinColumn()
   pet: Pet;
 }
