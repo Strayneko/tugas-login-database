@@ -22,8 +22,10 @@ import { UsersService } from './users/users.service';
 @UseFilters(AuthExceptionFilter)
 export class AppController {
   constructor(private readonly userService: UsersService) {}
+
   @Get('/')
   async index(@Request() req, @Res() res) {
+    // if user been logged in, redirect user to /home route
     if (req.user) res.redirect('/home');
     res.render('login', { message: req.flash('loginError') });
   }
@@ -53,12 +55,15 @@ export class AppController {
   register() {
     return;
   }
+
   @Post('/register')
   async createUser(@Res() res: Response, @Req() req, @Body() request: UserDto) {
     await this.userService.createUser(request);
+    // redirect user to login page and give flash message
     req.flash('loginError', 'Register success!');
     res.redirect('/');
   }
+
   @Get('/logout')
   logout(@Res() res: Response, @Request() req): void {
     req.logout(() => res.redirect('/'));

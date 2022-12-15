@@ -8,6 +8,7 @@ import { Pet } from 'src/Entities/pet.entities';
 @Injectable()
 export class UsersService {
   constructor(
+    // intializing user repository & pet repository
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @InjectRepository(Pet)
@@ -15,24 +16,32 @@ export class UsersService {
   ) {}
 
   findUsersByUsername(username: string) {
-    // return this.userRepository.find(id);
+    // find user by username
     return this.userRepository.findOne({
       where: {
         username,
       },
+      // add relation to Pet entity
       relations: ['pet'],
     });
   }
 
+  /*
+   * ==========================================
+   * TODO: save user to database with their pet
+   * ==========================================
+   */
   async createUser(request: UserDto): Promise<User> {
+    // insert pet data
     const pet = await this.petRepository.save({
       name: request.petName,
       picture: request.picture,
     });
+    // inserting user
     const user: User = this.userRepository.create({
       username: request.username,
       password: request.password,
-      pet,
+      pet, // relation: insert petId to user entity
     });
 
     return this.userRepository.save(user);

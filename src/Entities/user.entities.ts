@@ -30,6 +30,7 @@ export class User {
   })
   password: string;
 
+  // add relation one to one to Pet entity
   @OneToOne(() => Pet)
   @JoinColumn()
   pet: Pet;
